@@ -65,7 +65,7 @@ LLM_Model.train(self, epoch:int, batch_size:int, path:str, trigger:float, time: 
 LLM_Model.train(epoch = 1000, batch_size = 32, path = './test.pt', trigger = 0.03, time = 5)
 ```
 --------------------------------------------------------
-LLM_Model.save(self, path:str) 儲存模型位置儲存檔案為.pt檔 
+LLM_Model.save(self, path:str) 儲存模型位置儲存檔案為.pt檔  
 範例:  
 ```python
 LLM_Model.(path = './test.pt')
@@ -106,7 +106,7 @@ Load_Model(self, plm:str , revision :str, path:str) 物件，並讀取預訓練�
 model = Load_Model(plm = 'EleutherAI/pythia-1B-deduped', revision = "step3000", path = "./ test.pt")
 ```
 --------------------------------------------------------
-Load_Model.load_data(self, path:str) 讀取需預測.tsv檔案  
+Load_Model.load_data(self, path:str) 讀取需預測.tsv檔案    
 範例:  
 ```python
 Load_Model.load_data(path = "./data.tsv")
@@ -217,4 +217,4 @@ info.manual_extract_location_other()
 info.save_result(path  =  save_path)
 ```
 ## 建議事項
-其train、load、extract內部已寫好程式碼，只需修改下方參數並且依照train > load > extract 順序直行即可。  
+其train、load、extract內部已寫好程式碼，只需修改下方參數並且依照train > load > extract 順序執行即可。  
