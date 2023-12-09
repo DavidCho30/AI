@@ -29,13 +29,13 @@ train.py檔案為訓練模型檔案，其為訓練本次競賽中模型所使用
 檔案名稱\t起始位置\t內容\t標籤  
   
 以下為主要設定參數:  
-plm 代表「預訓練語言模型」 (String)  
-revision 為指定模型的特定版本  (String)  
-epoch  為訓練回合數  (int)  
+plm 代表「預訓練語言模型」(String)  
+revision 為指定模型的特定版本 (String)  
+epoch  為訓練回合數 (int)  
 batch_size  數據樣本的數量 (int)   
 path 模型儲存位置 (String)  
-trigger 每回合依照損失函數遞減程度觸發Early Stopping 閥門    
-time 為Early Stopping觸發次數，達到指定觸發次數將停止訓練  
+trigger 每回合依照損失函數遞減程度觸發Early Stopping 閥門 (float)    
+time 為Early Stopping觸發次數，達到指定觸發次數將停止訓練 (int)  
   
 本次競賽小組選擇使用的參數為  
 plm = 'EleutherAI/pythia-1B-deduped'  
