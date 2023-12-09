@@ -8,15 +8,15 @@
    本次競賽過程中使用python3.8.10版本以及torch、transformer、tqdm、datasets、random、re套件，下方提供程式碼以及版本參考:  
   pytorch == 2.0.1  
  ```python
-	 !pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu118
+!pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu118
 ```
 transformer==4.35.0
 ```python
-	!pip install transformer == 4.35.0
+!pip install transformer == 4.35.0
 ```
 tqdm ==4.66.1
 ```python
-	!pip install datasets == 2.14.6
+!pip install datasets == 2.14.6
 ```
 
 	 
