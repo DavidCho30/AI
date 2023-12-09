@@ -68,7 +68,7 @@ LLM_Model.train(epoch = 1000, batch_size = 32, path = './test.pt', trigger = 0.0
 LLM_Model.save(self, path:str) 儲存模型位置儲存檔案為.pt檔  
 範例:  
 ```python
-LLM_Model.(path = './test.pt')
+LLM_Model.(path = './my_model.pt')
 ```
 --------------------------------------------------------
 以下為使用範例提供參考:  
