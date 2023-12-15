@@ -49,7 +49,7 @@ class LLM_Model(BatchSampler):
         self.model = AutoModelForCausalLM.from_pretrained(plm, revision = revision, config = self.config)
         self.data_list = None
         
-        
+         
     def load_data(self, path:str):
         dataset = load_dataset("csv", data_files=path,
                             delimiter="\t",
@@ -65,8 +65,8 @@ class LLM_Model(BatchSampler):
         self.data_list = (list(dataset['train']))
         
         
-    def collate_batch(self, batch ,IGNORED_PAD_IDX = -100):
-        text = [f"{self.bos} {sample['fid']} {self.sep} {sample['label']} {self.eos}" for sample in batch]
+    def __collate_batch(self, batch ,IGNORED_PAD_IDX = -100):
+        text = [f"{self.bos} {sample['content']} {self.sep} {sample['label']} {self.eos}" for sample in batch]
         encoded_seq = self.tokenizer(text, padding = True)
         indexed_tks = torch.Tensor(encoded_seq['input_ids']).long()
         attention_mask = torch.Tensor(encoded_seq['attention_mask']).long()
@@ -76,9 +76,9 @@ class LLM_Model(BatchSampler):
     
     
     def train(self, epoch:int, batch_size:int, path:str, trigger:float):
-        train_dataloader = DataLoader(self.data_list, batch_size = 2, shuffle = False , collate_fn = self.collate_batch)
+        train_dataloader = DataLoader(self.data_list, batch_size = 2, shuffle = False , collate_fn = self.__collate_batch)
         bucket_train_dataloader = DataLoader(self.data_list, batch_sampler = BatchSampler(self.data_list, batch_size),
-                                     collate_fn = self.collate_batch, pin_memory = True)
+                                     collate_fn = self.__collate_batch, pin_memory = True)
         tks , labels, masks = next(iter(train_dataloader))
         optimizer = AdamW(self.model.parameters(), lr = 5e-5)
         self.model.resize_token_embeddings(len(self.tokenizer))
@@ -121,10 +121,10 @@ class LLM_Model(BatchSampler):
         torch.save(self.model.state_dict(), path)
         
 if __name__ == '__main__':
-    plm = "EleutherAI/pythia-1b-deduped"
+    plm = "EleutherAI/pythia-70m-deduped"
     revision = "step3000"
-    load_path = './train.tsv'
-    save_path = './model.pt'
+    load_path = 'train.tsv'
+    save_path = '70m.pt'
     model = LLM_Model(plm = plm, revision = revision)
     model.load_data(path = load_path)
     model.train(epoch = 1000, batch_size = 32, path = save_path, trigger = 0.03)
