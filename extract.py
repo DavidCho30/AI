@@ -4,10 +4,6 @@ import re
 class extract_information():
     def __init__(self, path:str):
         self.predict_list = self.load_dataset(path)
-        self.tag = [
-            'DOCTOR', 'PATIENT', 'PHONE', 'AGE', 'IDNUM', 'MEDICALRECORD', 'COUNTRY', 'CITY', 'STATE', 'STREET', 'ZIP',
-            'DEPARTMENT', 'HOSPITAL', 'ORGANIZATION', 'LOCATION-OTHER', 'DATE', 'TIME', 'DURATION', 'PHI'
-        ]
         self.result = []
 
     def load_dataset(self, path: str):
@@ -91,13 +87,13 @@ class extract_information():
             self.result.append(f"{fid}\tZIP\t{start_idx}\t{start_idx + len(value)}\t{value}")
             
     def __DEPARTMENT(self, fid, idx, content, value):
-        if(content.find(value) != -1 and len(value) > 2):
+        if(content.find(value) != -1 and len(value) > 4):
             start_idx = int(idx)  + content.find(value)
             self.result.append(f"{fid}\tDEPARTMENT\t{start_idx}\t{start_idx + len(value)}\t{value}")
         
     def __HOSPITAL(self, fid, idx, content, value):
         if "HOSPITAL" in value or 'SERVICE' in value or 'HEALTH' in value:
-            if(content.find(value) != -1):
+            if(content.find(value) >0):
                 hospitals = value.split("AND")
                 element = set()
                 for hospital in hospitals:
@@ -219,7 +215,14 @@ class extract_information():
                 end_idx = int(List['idx'])+len(List['content'])
                 self.result.append(f"{List['fid']}\tLOCATION-OTHER\t{start_idx}\t{end_idx}\t{self.predict_list[idx-1]['content']} {List['content']}")
                 
-    
+    def manual_extract_phone(self):
+        for idx, List in enumerate(self.predict_list):
+            phone_numbers = re.findall(r'\b\d{8}\b', List['content'])
+            if(phone_numbers):
+                for number in phone_numbers:
+                    start_idx = int(List['idx']) + List['content'].find(str(number))
+                    self.result.append(f"{List['fid']}\tPHONE\t{start_idx}\t{start_idx + len(number)}\t{number}")
+                
     def __convert_to_24hr(self, time_str):
             if "pm" in time_str.lower() and "12:" not in time_str.lower() and "12." not in time_str.lower():
                 # 如果是pm且不是12點，則加12小時
@@ -286,8 +289,8 @@ class extract_information():
     
     
 if __name__ == '__main__':
-    data_path = './reslut.tsv'
-    save_path = './answer.txt'
+    data_path = 'raw1b_con.tsv'
+    save_path = 'tttt.txt'
     info = extract_information(path = data_path)
     for idx, predict in enumerate(info.predict_list):
         elements = set()
@@ -297,6 +300,7 @@ if __name__ == '__main__':
                 info.extract(predict['fid'], predict['idx'], predict['content'], label)
                 elements.add(label)
     info.manual_extract_location_other()
+    info.manual_extract_phone()
     info.save_result(path = save_path)
 
     
