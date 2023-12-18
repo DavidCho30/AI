@@ -194,6 +194,12 @@ extract_informationmanual_extract_location_other()根據正規化模組手動提
 extract_informatio.manual_extract_location_other()
 ```
 --------------------------------------------------------
+extract_informationmanual_extract_phone()根據正規化模組手動提取PHONE內容  
+範例:  
+```python
+extract_informatio.manual_extract_phone()
+```
+--------------------------------------------------------
 save_result(self, path:str) 依據路徑保存處裡過後結果  
 範例:  
 ```python
@@ -214,6 +220,7 @@ if len(label) > 2 and label not in elements:
 info.extract(predict['fid'], predict['idx'], predict['content'], label)
 elements.add(label)
 info.manual_extract_location_other()
+info.manual_extract_phone()
 info.save_result(path  =  save_path)
 ```
 ## 建議事項
